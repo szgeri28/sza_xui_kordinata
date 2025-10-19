@@ -57,8 +57,19 @@ ros2 launch sza_xui_kordinata coords_launch.py
 
 ```mermaid
 graph LR
+    subgraph Publisher Node
+        coordinate_publisher["coordinate_publisher"]
+    end
+
+    subgraph Subscriber Node
+        distance_subscriber["distance_subscriber"]
+    end
+
     coordinate_publisher -->|geometry_msgs/Point| distance_subscriber
+    distance_subscriber -->|Distance from origin| Terminal["Terminal / Log"]
+
 ```
+
 
 * `coordinate_publisher` küldi a véletlenszerű koordinátákat
 * `distance_subscriber` figyeli a topicot és számolja a távolságot
@@ -72,3 +83,4 @@ graph LR
 
 * A `coordinate_publisher` node véletlenszerű koordinátákat generál.
 * A `distance_subscriber` folyamatosan figyeli a topicot, és logolja a távolságot az origótól.
+
