@@ -1,59 +1,74 @@
-# `ros2_py_template` package
-ROS 2 python package.  [![Static Badge](https://img.shields.io/badge/ROS_2-Humble-34aec5)](https://docs.ros.org/en/humble/)
-## Packages and build
+# sza_xui_kordinata
 
-It is assumed that the workspace is `~/ros2_ws/`.
+## Leírás
 
-### Clone the packages
-``` r
+Ez a ROS 2 Python package két node-ból áll:
+
+* **coordinate_publisher**: Véletlenszerű koordinátákat generál egy `geometry_msgs/Point` típusú topicra.
+* **distance_subscriber**: Feliratkozik a koordinátákat tartalmazó topicra, és kiszámolja a távolságot az origótól.
+
+---
+
+## Követelmények
+
+* ROS 2 Humble
+* Python 3.10+
+* `rclpy`, `geometry_msgs` csomagok
+
+---
+
+## Telepítés
+
+1. Helyezd a package-et a ROS 2 workspace `src` mappájába:
+
+```bash
 cd ~/ros2_ws/src
-```
-``` r
-git clone https://github.com/sze-info/ros2_py_template
+# Másold ide a sza_xui_kordinata mappát
 ```
 
-### Build ROS 2 packages
-``` r
+2. Buildeld a package-et:
+
+```bash
 cd ~/ros2_ws
-```
-``` r
-colcon build --packages-select ros2_py_template --symlink-install
-```
-
-<details>
-<summary> Don't forget to source before ROS commands.</summary>
-
-``` bash
-source ~/ros2_ws/install/setup.bash
-```
-</details>
-
-``` r
-ros2 launch ros2_py_template launch_example1.launch.py
+colcon build --packages-select sza_xui_kordinata --symlink-install
+source install/setup.bash
 ```
 
-# Delete this part if you are using it as a template
+---
 
-ROS 2 pacage template, to get started, use template by clicking on the Green button labeled [`Use this template`](https://github.com/sze-info/ros2_py_template/generate) / [`Create new repository`](https://github.com/sze-info/ros2_py_template/generate). 
+## Futtatás
 
-<p align="center"><img src="img/use_this_template01.png" width="60%" /></p>
+### Parancssori futtatás
+
+```bash
+ros2 run sza_xui_kordinata coordinate_publisher
+ros2 run sza_xui_kordinata distance_subscriber
+```
+
+### Launch fájllal (ha létrehozol egyet)
+
+```bash
+ros2 launch sza_xui_kordinata coords_launch.py
+```
+
+---
+
+## Node-ok és topic kapcsolat
+
+```mermaid
+graph LR
+    coordinate_publisher -->|geometry_msgs/Point| distance_subscriber
+```
+
+* `coordinate_publisher` küldi a véletlenszerű koordinátákat
+* `distance_subscriber` figyeli a topicot és számolja a távolságot
 
 
-Let's assume 
-- your Github username is `mycoolusername`
-- your ROS 2 repo shold be `cool_ros2_package`
 
-Replace everything in the cloned repo:
 
-- `ros2_py_template` >> `cool_ros2_package` (the folder was already renamed after `Use this template`)
-- `sze-info` >> `mycoolusername`
-- find all `todo` strings and fill the blanks
+---
 
-The easiest way is VS code:
+## Megjegyzés
 
-<p align="center"><img src="img/replace01.png" width="90%" /></p>
-
-> [!IMPORTANT]  
-> Don't forget to rename the directory (folder) and the file too.
-
-Now `colcon build` your ROS 2 package and you can start wokring.
+* A `coordinate_publisher` node véletlenszerű koordinátákat generál.
+* A `distance_subscriber` folyamatosan figyeli a topicot, és logolja a távolságot az origótól.
